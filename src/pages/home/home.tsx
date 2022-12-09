@@ -1,5 +1,10 @@
+/**
+ * @author yuping.pang
+ * @date 2022-12-09 14:44
+ * @description 调试useState 
+**/
 import React, { useState } from "react";
-import { Button } from "@mantine/core";
+import { Button, Card, Grid } from "@mantine/core";
 import MyColorInputs from '../components/colorInputs';
 
 export default function App(){
@@ -13,10 +18,21 @@ export default function App(){
     setButtonText(name)
   }
 
-  return (<>
-    <div>
-      <Button onClick={handleClick} compact style={{marginRight: '8px' }}>{buttonText}</Button>
-    </div>
-    <MyColorInputs />
-  </>)
+  return (
+    <Grid grow style={{ textAlign: 'center' }}>
+      <Grid.Col span={3}>
+        <Card shadow="sm" p="lg" radius="md" withBorder>
+          <Button onClick={handleClick} compact>{buttonText}</Button>
+        </Card>
+      </Grid.Col>
+      <Grid.Col span={3}>
+        <Card shadow="sm" p="lg" radius="md" withBorder>
+          <MyColorInputs />
+        </Card>
+      </Grid.Col>
+      <Grid.Col span={3}>3</Grid.Col>
+      <Grid.Col span={3}>4</Grid.Col>
+      <Grid.Col span={3}>5</Grid.Col>
+      
+    </Grid>)
 }
