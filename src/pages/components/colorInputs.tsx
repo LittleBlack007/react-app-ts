@@ -6,7 +6,7 @@
 import React, { createContext, useContext, useState, Dispatch, SetStateAction } from 'react';
 import { ColorInput, Avatar, Button, Space } from "@mantine/core";
 import { IconStar } from '@tabler/icons';
-import myStyles from './colorInputs.module.css';
+import myStyles from './css/colorInputs.module.css';
 
 type colorContextType = {
   color: string,
