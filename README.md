@@ -1,3 +1,9 @@
+# react-app-ts
+组件库使用：mantine
+### git branch -m main master
+### git fetch origin
+### git branch -u origin/master master
+### git remote set-head origin -a
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
