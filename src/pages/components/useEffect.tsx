@@ -3,10 +3,10 @@
  * 用来引入具有副作用的操作，最常见的就是向服务器请求数据。
  * 以前，放在componentDidMount里面的代码，现在可以放在useEffect()。
 */
-import React, { useState } from "react";
-import { List, ThemeIcon,  } from '@mantine/core';
+import React, { useState, useEffect } from "react";
+import { List, ThemeIcon, Button  } from '@mantine/core';
 import { IconCircleCheck, IconCircleDashed } from '@tabler/icons';
-
+import {request, HttpMethod} from '@/server/request';
 type dataType = {
   state: string,
   msg?: string,
@@ -17,14 +17,15 @@ type toDoList = Array<{
   time: string,
   thing: string
 }>
-function mockGetData(data: dataType){
-  fetch('https://api.apiopen.top/api/sentences')
-}
 
+function mockGetData(){
+  console.log(1231321)
+  request('https://api.apiopen.top/api/sentences',HttpMethod.get,null,{mode: 'cors'})
+}
 export default function UseEffectExample(){
   const [ loading, setLoading ]  = useState(true);
   const [ toDoList, setToDoList ] = useState([{ time: '2022-12-16', thing: '抢防疫药品' }]);
-  let id = Math.random().toString().slice(1);
+  //let id = Math.random().toString().slice(1);
   return (
     <List
       spacing="xs"
@@ -35,10 +36,7 @@ export default function UseEffectExample(){
         </ThemeIcon>
       }
     >
-      <List.Item>Clone or download repository from GitHub</List.Item>
-      <List.Item>Install dependencies with yarn</List.Item>
-      <List.Item>To start development server run npm start command</List.Item>
-      <List.Item>Run tests to make sure your changes do not break the build</List.Item>
+      <List.Item><Button>刷新</Button></List.Item>
       <List.Item
         icon={
           <ThemeIcon color="blue" size={24} radius="xl">
@@ -46,7 +44,7 @@ export default function UseEffectExample(){
           </ThemeIcon>
         }
       >
-        Submit a pull request once you are done
+        {mockGetData}
       </List.Item>
     </List>
   )
