@@ -8,6 +8,7 @@ import { Button, Card, Grid } from "@mantine/core";
 import MyColorInputs from '../components/colorInputs';
 import InputUser from '../components/useReducer';
 import UseEffect from '../components/useEffect';
+import CustomGetImgHook from "../components/customGetImgsHook";
 
 export default function App(){
   const initName = '初始化按钮名称';
@@ -33,8 +34,8 @@ export default function App(){
         </Card>
       </Grid.Col>
       <Grid.Col span={3}><InputUser /></Grid.Col>
-      <Grid.Col span={3}><UseEffect /></Grid.Col>
-      <Grid.Col span={3}>5</Grid.Col>
+      <Grid.Col span={4}><UseEffect /></Grid.Col>
+      <Grid.Col span={4}><CustomGetImgHook /></Grid.Col>
       
     </Grid>)
 }

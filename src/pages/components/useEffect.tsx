@@ -4,13 +4,12 @@
  * 以前，放在componentDidMount里面的代码，现在可以放在useEffect()。
 */
 import React, { useState, useEffect } from "react";
-import { List, ThemeIcon, Button  } from '@mantine/core';
+import { List, ThemeIcon, Button, Card  } from '@mantine/core';
 import { IconCircleCheck, IconCircleDashed } from '@tabler/icons';
 import {request, HttpMethod} from '@/server/request';
 type dataType = {
-  state: string,
-  msg?: string,
-  data: any
+  from: string,
+  name: string,
 }
 
 type toDoList = Array<{
@@ -19,34 +18,46 @@ type toDoList = Array<{
 }>
 
 function mockGetData(){
-  console.log(1231321)
-  request('https://api.apiopen.top/api/sentences',HttpMethod.get,null,{mode: 'cors'})
+  return request('https://api.apiopen.top/api/sentences',HttpMethod.get,null,{mode: 'cors'})
 }
 export default function UseEffectExample(){
-  const [ loading, setLoading ]  = useState(true);
-  const [ toDoList, setToDoList ] = useState([{ time: '2022-12-16', thing: '抢防疫药品' }]);
-  //let id = Math.random().toString().slice(1);
+  const [ loading, setLoading ]  = useState(false);
+  const [ toDoList, setToDoList ] = useState({name:'刷新可获取诗句',from: '诗名'});
+  const [ id, setId ] = useState('1')
+  useEffect(() => {
+    setLoading(true);
+    mockGetData().then(res => {
+      const data: dataType = res.result;
+      setToDoList(data);
+      setLoading(false);
+    })
+  },[id])
+  function changeId(){
+    setId(Math.random().toString().slice(2));
+  }
   return (
-    <List
-      spacing="xs"
-      size="sm"
-      icon={
-        <ThemeIcon color="teal" size={24} radius="xl">
-          <IconCircleDashed size={16} />
-        </ThemeIcon>
-      }
-    >
-      <List.Item><Button>刷新</Button></List.Item>
-      <List.Item
+    <Card shadow="sm" p="lg" radius="md" withBorder>
+      <List
+        spacing="xs"
+        size="sm"
         icon={
-          <ThemeIcon color="blue" size={24} radius="xl">
-            <IconCircleCheck size={16} />
+          <ThemeIcon color="teal" size={24} radius="xl">
+            <IconCircleDashed size={16} />
           </ThemeIcon>
         }
       >
-        {mockGetData}
-      </List.Item>
-    </List>
+        <List.Item><Button loading={loading} onClick={changeId}>刷新-{toDoList.from}</Button></List.Item>
+        <List.Item
+          icon={
+            <ThemeIcon color="blue" size={24} radius="xl">
+              {loading ? <IconCircleDashed size={16} /> : <IconCircleCheck size={16} />}
+            </ThemeIcon>
+          }
+        >
+          {toDoList.name}
+        </List.Item>
+      </List>
+    </Card>
   )
 }
 
