@@ -48,24 +48,22 @@ export default function CustomGetImgHook(){
   }
   return (
     <Card shadow="sm" p="lg" radius="md" withBorder>
-      <NumberInput value={page} onChange={onChangePage} style={{width: '80%', display: 'inline-block'}} />
+      <NumberInput value={page} onChange={onChangePage} style={{width: '80%', display: 'inline-block', marginRight: '8px'}} />
       <Button onClick={setRandomNumber}>随机</Button>
       <div style={{position: 'relative', marginTop: '16px' }}>
         <LoadingOverlay visible={loading} overlayBlur={2} />
         <Grid grow>
           {
             imgs && imgs.map((item:dataType) => 
-              (<>
-                <Grid.Col span={3} key={item.id}>
-                  <Image
-                    width={100}
-                    height={80}
-                    radius="md"
-                    src={item.url}
-                    alt={item.title}
-                  />
-                </Grid.Col>
-              </>)
+              <Grid.Col span={3} key={item.id}>
+                <Image
+                  width={100}
+                  height={80}
+                  radius="md"
+                  src={item.url}
+                  alt={item.title}
+                />
+              </Grid.Col>
             )
           }
         </Grid>
