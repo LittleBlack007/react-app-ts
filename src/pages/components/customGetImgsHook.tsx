@@ -57,7 +57,6 @@ export default function CustomGetImgHook(){
             imgs && imgs.map((item:dataType) => 
               <Grid.Col span={3} key={item.id}>
                 <Image
-                  width={100}
                   height={80}
                   radius="md"
                   src={item.url}
