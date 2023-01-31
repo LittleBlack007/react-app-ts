@@ -2,7 +2,7 @@ import Qs from 'qs';
 const TIME_OUT = 6000; // 超时时间
 const TOKEN = 'token'; // 自定义token
 export enum ContentType { // ContentType 映射表
-  json = 'application/json;charset=UTF-8', // json数据格式
+  json = 'application/json; charset=UTF-8', // json数据格式
   form = 'application/x-www-form-urlencoded; charset=UTF-8', // 表单数据格式
   download = 'application/octet-stream' // 二进制文件流格式，用于download
 }
@@ -53,12 +53,19 @@ export async function request(url: string, method?: string, data?:any, config?: 
   }
   let reqUrl = url.replace('//', '/');
 
-  const headers: Headers = new Headers({
-    // 实例配置没传token过来的话，直接是哟红保存在sessionStorage的token
-    // 这里假设后端直接读头文件的token字段
-    //token: sessionStorage.token,
-    'Content-Type': contentType
-  })
+  // const headers = new Headers({
+  //   // 实例配置没传token过来的话，直接是哟红保存在sessionStorage的token
+  //   // 这里假设后端直接读头文件的token字段
+  //   //token: sessionStorage.token,
+  //   'Content-Type': contentType
+  // })
+  if(!config){
+    config = {
+      headers:{
+        'Content-Type': contentType
+      }
+    }
+  }
 
   if(!method || method === HttpMethod.get){
     if(data){
@@ -69,7 +76,7 @@ export async function request(url: string, method?: string, data?:any, config?: 
     })
   }else if(method === HttpMethod.post){
     promise = await fetch(reqUrl, {
-      body: data,
+      body: JSON.stringify(data),
       method: HttpMethod.post,
       ...config
     })
