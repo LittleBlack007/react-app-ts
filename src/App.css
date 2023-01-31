@@ -3,9 +3,12 @@
   min-height: 100vh;
   padding: 12px;
 }
+.App header {
+  text-align: right;
+}
 /* #282c34 */
 .App-logo {
-  height: 10vmin;
+  height: 5vmin;
   pointer-events: none;
 }
 

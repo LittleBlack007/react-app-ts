@@ -11,7 +11,7 @@ type aiSendData = {
 export default function OpenAI(){
   const initialValues = {
     model: 'image-alpha-001',
-    prompt: '齐天大神'
+    prompt: '兔年'
   }
   const imgRef = useRef(null);
   const [ imgSrc, setImgSrc ] = useState('');
