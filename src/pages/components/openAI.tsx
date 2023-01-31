@@ -14,6 +14,7 @@ export default function OpenAI(){
     prompt: '兔年'
   }
   const imgRef = useRef(null);
+  const [ model, setModel ] = useState(initialValues.model)
   const [ imgSrc, setImgSrc ] = useState('');
   const [ loading, setLoading ] = useState(false);
   const form = useForm({
@@ -26,8 +27,13 @@ export default function OpenAI(){
   function onSubmit(value: aiSendData) {
     setImgSrc('');
     setLoading(true);
+    setModel(value.model);
     request('/openai/generate-image', HttpMethod.post, value).then((res: any) => {
-      setImgSrc(res.url);
+      if(value.model === 'image-alpha-001'){
+        setImgSrc(res.url);
+      }else{
+        setImgSrc(res[0].text);
+      }
       console.log(imgRef)
       setLoading(false)
     }).catch((err) => {
@@ -42,7 +48,7 @@ export default function OpenAI(){
       <div>
         <LoadingOverlay visible={loading} overlayBlur={2} />
       </div>
-      <div style={{ maxWidth: '200px', display: 'inline-block', marginRight: '18px' }}>
+      <div style={{ width: '380px', margin: '8px auto'}}>
         <form onSubmit={form.onSubmit(onSubmit)}>
           <Select
             label='模型'
@@ -68,7 +74,12 @@ export default function OpenAI(){
           </Group>
         </form>
       </div>
-      <img ref={imgRef} src={imgSrc} style={{maxHeight: '300px'}} />
+      {
+        model === 'image-alpha-001' ? 
+        <img ref={imgRef} src={imgSrc} style={{maxHeight: '300px'}} /> 
+        :<div style={{whiteSpace: 'pre-wrap', textAlign: 'left', maxWidth: '100%' }}>{imgSrc}</div>
+      }
+      
     </Card>
   )
 }
