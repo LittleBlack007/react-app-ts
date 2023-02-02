@@ -51,8 +51,8 @@ export async function request(url: string, method?: string, data?:any, config?: 
   }else {
     contentType = ContentType.json;
   }
-  let reqUrl = url.replace('//', '/');
-
+  let reqUrl = url.replace(/(?<!:)\/\//, '/');
+  console.log(reqUrl,'=====================================')
   // const headers = new Headers({
   //   // 实例配置没传token过来的话，直接是哟红保存在sessionStorage的token
   //   // 这里假设后端直接读头文件的token字段
@@ -99,15 +99,16 @@ export async function request(url: string, method?: string, data?:any, config?: 
 async function handleRes(res: Response){
   let parseRes;
   const contentType = res.headers.get('Content-Type') || '';
+  //console.log(res)
+  if(!res.ok){
+    throw res; 
+  }
   if(contentType.indexOf('json') > -1){
     parseRes = await res.json()
   }else if(contentType.indexOf('form') > -1){
     parseRes = await res.formData();
   }else{
     parseRes = await res.text();
-  }
-  if(!res.ok){
-   throw parseRes; 
   }
   return parseRes;
 }

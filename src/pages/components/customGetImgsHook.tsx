@@ -47,7 +47,7 @@ export default function CustomGetImgHook(){
     }, 300)
   }
   return (
-    <Card shadow="sm" p="lg" radius="md" withBorder>
+    <Card shadow="sm" p="lg" radius="md" withBorder> 
       <NumberInput value={page} onChange={onChangePage} style={{width: '80%', display: 'inline-block', marginRight: '8px'}} />
       <Button onClick={setRandomNumber}>随机</Button>
       <div style={{position: 'relative', marginTop: '16px' }}>

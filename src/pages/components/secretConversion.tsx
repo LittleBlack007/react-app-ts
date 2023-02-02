@@ -18,8 +18,7 @@ export default function SecretConversion(){
       })
       return
     }
-    console.log(encryptText, key)
-    const result = CryptoJSAES.decrypt(encryptText, key);
+    const result = CryptoJSAES.decrypt(encryptText.trim(), key);
     setDecryptText(result.toString(CryptoJSENCUTF8));
   }
 
@@ -31,9 +30,7 @@ export default function SecretConversion(){
       })
       return
     }
-    console.log(decryptText, key)
-    const result = CryptoJSAES.encrypt(decryptText, key).toString();
-    console.log(result)
+    const result = CryptoJSAES.encrypt(decryptText.trim(), key).toString();
     setEncryptText(result)
   }
 
