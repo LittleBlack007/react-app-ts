@@ -52,7 +52,6 @@ export async function request(url: string, method?: string, data?:any, config?: 
     contentType = ContentType.json;
   }
   let reqUrl = url.replace(/(?<!:)\/\//, '/');
-  console.log(reqUrl,'=====================================')
   // const headers = new Headers({
   //   // 实例配置没传token过来的话，直接是哟红保存在sessionStorage的token
   //   // 这里假设后端直接读头文件的token字段

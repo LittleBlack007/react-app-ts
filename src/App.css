@@ -3,8 +3,9 @@
   min-height: 100vh;
   padding: 12px;
 }
-.App header {
-  text-align: right;
+
+.App .app-setion{
+  display: flex
 }
 /* #282c34 */
 .App-logo {
@@ -29,4 +30,64 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.app-main-ppp{
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.app-main-ppp * {
+  box-sizing: border-box;
+}
+
+.app-main-ppp .ppp-header-seat{
+  height: 48px;
+  line-height: 48px;
+  background: transparent;
+  flex: 0 0 auto;
+  padding: 0 50px;
+  flex: 0 0 auto;
+}
+
+.app-main-ppp .ppp-hearder-real{
+  padding: 0px;
+  height: 48px;
+  line-height: 48px;
+  width: 100%;
+  z-index: 100;
+  right: 0px;
+  position: fixed;
+  top: 0;
+  background-color: dodgerblue;
+}
+
+.app-main-ppp .ppp-mian{
+  position: relative;
+  margin: 18px;
+  flex: auto;
+  min-height: 0;
+}
+
+.app-main-ppp .ppp-footer{
+  color: rgba(0,0,0,.85);
+  font-size: 14px;
+  background: #f0f2f5;
+  flex: 0 0 auto;
+}
+
+.app-aside-seat{
+  width: 208px; 
+  overflow: hidden; 
+  flex: 0 0 208px; 
+  max-width: 208px; 
+  min-width: 208px;
+  transition: 
+    background-color 0.3s ease 0s, 
+    min-width 0.3s ease 0s, 
+    max-width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
 }
