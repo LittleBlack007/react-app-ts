@@ -11,7 +11,7 @@ import UseEffect from '../components/useEffect';
 import CustomGetImgHook from "../components/customGetImgsHook";
 import OpenAI from "../components/openAI";
 import SecretConversion from "../components/secretConversion";
-import ConstellationFortune from "../components/constellationFortune";
+import { Outlet } from "react-router-dom";
 
 export default function App(){
   const initName = '初始化按钮名称';
@@ -26,9 +26,9 @@ export default function App(){
 
   return (
     <Grid grow style={{ textAlign: 'center' }}>
+      <Outlet />
       <Grid.Col span={12}><SecretConversion /></Grid.Col>
       <Grid.Col span={12}><OpenAI /></Grid.Col>
-      <Grid.Col span={6}><ConstellationFortune /></Grid.Col>
       <Grid.Col span={4}><UseEffect /></Grid.Col>
       <Grid.Col span={4}><CustomGetImgHook /></Grid.Col>
       <Grid.Col span={3}>
