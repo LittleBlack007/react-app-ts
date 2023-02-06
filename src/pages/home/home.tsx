@@ -8,7 +8,6 @@ import { Button, Card, Grid } from "@mantine/core";
 import MyColorInputs from '../components/colorInputs';
 import InputUser from '../components/useReducer';
 import UseEffect from '../components/useEffect';
-import CustomGetImgHook from "../components/customGetImgsHook";
 import OpenAI from "../components/openAI";
 import { Outlet } from "react-router-dom";
 
@@ -28,7 +27,6 @@ export default function App(){
       <Outlet />
       <Grid.Col span={12}><OpenAI /></Grid.Col>
       <Grid.Col span={4}><UseEffect /></Grid.Col>
-      <Grid.Col span={4}><CustomGetImgHook /></Grid.Col>
       <Grid.Col span={3}>
         <Card shadow="sm" p="lg" radius="md" withBorder>
           <Button onClick={handleClick} compact>{buttonText}</Button>

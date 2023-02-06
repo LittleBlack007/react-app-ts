@@ -10,7 +10,7 @@ useReducer 是 useState 的替代方案，useState 能做到的事，它都能�
 useReducer 某种程度上解耦了操作逻辑(action)和后续的行为(一般是 UI 的更新)，虽然代码量变多了，但是看起来更加整洁。
 */
 import React, { useReducer } from 'react';
-import { Input, Badge } from '@mantine/core';
+import { Input, Badge, Card } from '@mantine/core';
 
 const userInfoReducer = (state: any, action: any) => {
   switch(action.type){
@@ -29,9 +29,9 @@ export default function InputUser(){
     dispatch({ type: 'setUserName', payload:{ userName: e.target.value } })
   }
   return (
-    <>
+    <Card withBorder radius={'sm'}>
       <Input placeholder="set userName" onInput={setUserName}/>
       <Badge>{ state.userName }</Badge>
-    </>
+    </Card>
   )
 }

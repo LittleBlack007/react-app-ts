@@ -1,9 +1,10 @@
 import {
   createBrowserRouter,
   useNavigate,
-  Navigate
+  Navigate,
+  Outlet
 } from 'react-router-dom';
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { useEffect, lazy, Suspense, ReactNode, ComponentType } from 'react';
 import { LoadingOverlay } from '@mantine/core';
 
 // 重定向组件
@@ -17,10 +18,33 @@ const Redirect = () => {
   })
 }
 
-const App = lazy(() => import('@/App'))
-const Home = lazy(() => import('@/pages/home/home'));
-const SecretConversion = lazy(() => import('@/pages/components/secretConversion'));
-const ConstellationFortune = lazy(() => import('@/pages/components/constellationFortune'));
+type lazyFuncObj = () => Promise<{ default: ComponentType<any>; }>
+
+// 路由懒加载
+const LazyConponent = (func: lazyFuncObj, props:object = {}): ReactNode => {
+  const LazyComp = lazy(func);
+  return (
+    <Suspense 
+      fallback={
+        <div>
+          <LoadingOverlay style={{width:'100vw', height:'90vh',marginTop: '48px'}} 
+            visible 
+            overlayBlur={2} 
+          />
+        </div>
+      }
+    >
+      <LazyComp {...props} />
+    </Suspense>
+  )
+}
+
+const App = () => import('@/App')
+const Home = () => import('@/pages/home/home');
+const SecretConversion = () => import('@/pages/components/secretConversion');
+const ConstellationFortune = () => import('@/pages/components/constellationFortune');
+const CustomGetImgHook = () => import("@/pages/components/customGetImgsHook");
+const ColorInputs = () => import('@/pages/components/colorInputs');
 
 
 export type routesItem = {
@@ -67,6 +91,32 @@ export const routes: routesItem[] = [
         },
         element: SecretConversion
       },
+      {
+        path: '/range-images',
+        meta:{
+          name: '随机图片',
+          icon: 'IconPhoto'
+        },
+        element: CustomGetImgHook
+      },
+      {
+        path: '/next-routes',
+        meta:{
+          name: '嵌套路由',
+          icon: 'IconPhoto'
+        },
+        //element: ,
+        children:[
+          {
+            path: '/next-routes/next-routes-children',
+            meta:{
+              name: '子路由',
+              icon: 'IconPhoto'
+            },
+            element: ColorInputs
+          }
+        ]
+      }
     ]
   }
 ]
@@ -90,19 +140,13 @@ function generateRoutesForRouter(item: routesItem[]):routesItem[]{
               props: { to: routeI.redirect }
             },
           }
-          if(redirectRoute){ // 找到重定向的路由
-            navigate.element = <Navigate to={routeI.redirect} replace={true} />
-          }else{
-            navigate.element = <Navigate to='/' replace={true} />
-          }
+          navigate.element = <Navigate to={redirectRoute ? routeI.redirect : '/'} replace={true} />  // 找到重定向的路由才跳转，错误则先跳到根目录，后面改为404
           realChidren.unshift(navigate)
         }
         newItem.children = realChidren;
       }
       if(newItem.element){
-        newItem.element = <Suspense fallback={<div ><LoadingOverlay style={{width:'100vw', height:'90vh',marginTop: '48px'}} visible overlayBlur={2} /></div>}>
-          <routeI.element {...newItem.meta?.props}  />
-        </Suspense>
+        newItem.element = LazyConponent(newItem.element, newItem.meta?.props);
       }
     })
   }
