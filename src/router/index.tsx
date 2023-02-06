@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
-  useNavigate
+  useNavigate,
+  Navigate
 } from 'react-router-dom';
 import React, { useEffect, lazy, Suspense } from 'react';
 import { LoadingOverlay } from '@mantine/core';
@@ -21,17 +22,16 @@ const Home = lazy(() => import('@/pages/home/home'));
 const SecretConversion = lazy(() => import('@/pages/components/secretConversion'));
 const ConstellationFortune = lazy(() => import('@/pages/components/constellationFortune'));
 
-// import App from '@/App';
-// import Home from '@/pages/home/home';
-// import SecretConversion from '@/pages/components/secretConversion';
-// import ConstellationFortune from '@/pages/components/constellationFortune';
 
 export type routesItem = {
   path: string,
-  element: any,
+  element?: any,
+  redirect?: string
   meta?: {
     icon?: string,
     name: string,
+    hidden?: true,
+    props?:object
   },
   children?: routesItem[]
 }
@@ -41,6 +41,7 @@ export const routes: routesItem[] = [
   {
     path: '/',
     element: App,
+    redirect: '/home',
     children:[
       {
         path: "/home",
@@ -49,16 +50,14 @@ export const routes: routesItem[] = [
           icon: 'IconHome'
         },
         element: Home,
-        children:[
-          {
-            path: "/home/constellation-fortune",
-            meta:{
-              name: '星座运势',
-              icon: 'IconZodiacScorpio'
-            },
-            element: ConstellationFortune
-          },
-        ]
+      },
+      {
+        path: "/constellation-fortune",
+        meta:{
+          name: '星座运势',
+          icon: 'IconZodiacScorpio'
+        },
+        element: ConstellationFortune
       },
       {
         path: "/secret-conversion",
@@ -80,11 +79,31 @@ function generateRoutesForRouter(item: routesItem[]):routesItem[]{
       const newItem = {...routeI};
       data.push(newItem);
       if(routeI.children && routeI.children.length > 0){
-        newItem.children = generateRoutesForRouter(routeI.children);
+        const realChidren = generateRoutesForRouter(routeI.children);
+        if(routeI.redirect){ // 路由重定向
+          const redirectRoute = realChidren.find(cItem => cItem.path === routeI.redirect);
+          const navigate:routesItem = {
+            path: routeI.path,
+            meta:{
+              hidden: true,
+              name: '转' + routeI.path,
+              props: { to: routeI.redirect }
+            },
+          }
+          if(redirectRoute){ // 找到重定向的路由
+            navigate.element = <Navigate to={routeI.redirect} replace={true} />
+          }else{
+            navigate.element = <Navigate to='/' replace={true} />
+          }
+          realChidren.unshift(navigate)
+        }
+        newItem.children = realChidren;
       }
-      newItem.element = <Suspense fallback={<div ><LoadingOverlay style={{width:'100vw', height:'90vh',marginTop: '48px'}} visible overlayBlur={2} /></div>}>
-      <routeI.element />
-      </Suspense>
+      if(newItem.element){
+        newItem.element = <Suspense fallback={<div ><LoadingOverlay style={{width:'100vw', height:'90vh',marginTop: '48px'}} visible overlayBlur={2} /></div>}>
+          <routeI.element {...newItem.meta?.props}  />
+        </Suspense>
+      }
     })
   }
   return data;
@@ -92,6 +111,7 @@ function generateRoutesForRouter(item: routesItem[]):routesItem[]{
 
 const realRoutes: routesItem[] = generateRoutesForRouter(routes);
 // 创建路由
-const router = createBrowserRouter(realRoutes)
+const router = createBrowserRouter(realRoutes,{
+})
 
 export default router;

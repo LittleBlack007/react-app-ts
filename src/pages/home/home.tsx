@@ -10,7 +10,6 @@ import InputUser from '../components/useReducer';
 import UseEffect from '../components/useEffect';
 import CustomGetImgHook from "../components/customGetImgsHook";
 import OpenAI from "../components/openAI";
-import SecretConversion from "../components/secretConversion";
 import { Outlet } from "react-router-dom";
 
 export default function App(){
@@ -27,7 +26,6 @@ export default function App(){
   return (
     <Grid grow style={{ textAlign: 'center' }}>
       <Outlet />
-      <Grid.Col span={12}><SecretConversion /></Grid.Col>
       <Grid.Col span={12}><OpenAI /></Grid.Col>
       <Grid.Col span={4}><UseEffect /></Grid.Col>
       <Grid.Col span={4}><CustomGetImgHook /></Grid.Col>

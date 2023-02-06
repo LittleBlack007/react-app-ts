@@ -22,7 +22,7 @@ function App() {
                 <main className='ppp-main'>
                   <Outlet />
                 </main>
-                <footer>&copy;PPP</footer>
+                <footer className='ppp-footer'>&copy;PPP</footer>
               </div>
             </section>
           </div>

@@ -15,6 +15,9 @@ function Aside(){
   function ergodicRoute(routes: routesItem[]){
     const navList: ReactNode[] = [];
     routes.map((item:routesItem) => {
+      if(item.meta?.hidden){
+        return;
+      }
       let iconName = 'IconAdjustmentsHorizontal';
       if((item.meta && item.meta.icon)){
         iconName = item.meta.icon
