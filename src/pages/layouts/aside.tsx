@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useActionData, useLocation, useNavigate } from "react-router-dom";
 import style from './aside.module.css';
 import { routes, routesItem } from "@/router";
 import * as icons from '@tabler/icons';
@@ -10,10 +10,10 @@ function Aside(){
   const variant = "light";
   const root = routes.find( item => item.path === '/' );
   const location = useLocation();
-  const [ activeKey, setActiveKey ] = useState(location.pathname);
+  const [ activeKey, setActiveKey ] = useState(location.pathname); // 当前路由路径默认激活项
   const navigate = useNavigate();
   // 遍历路由信息生成菜单
-  function ergodicRoute(routes: routesItem[]){
+  function ergodicRoute(routes: routesItem[], defaultOpened: boolean): [ReactNode[],boolean]{
     const navList: ReactNode[] = [];
     routes.map((item:routesItem) => {
       if(item.meta?.hidden){
@@ -26,10 +26,12 @@ function Aside(){
       const IconPre = (icons as any)[iconName];
       const Icon = IconPre || icons.IconBug
       if(item.children && item.children.length > 0){
-        let defaultOpened = false;
+        // 如果激活对象在改菜单下的子集，则默认打开菜单项
         if(item.children.find(rItem => location.pathname === rItem.path)){
           defaultOpened = true;
         }
+        const [ nextList, nextOpened ] = ergodicRoute(item.children,defaultOpened)
+        const opened = defaultOpened || nextOpened
         navList.push(
           <NavLink
             key={item.path}
@@ -38,8 +40,8 @@ function Aside(){
             icon={<Icon size={16} stroke={1.5} />}
             color={color}
             variant={variant}
-            defaultOpened={defaultOpened}
-          >{ergodicRoute(item.children)}</NavLink>
+            defaultOpened={opened}
+          >{nextList}</NavLink>
         )
       }else{
         navList.push(
@@ -55,14 +57,12 @@ function Aside(){
         )
       }
     })
-    return navList;
+    return [navList, defaultOpened];
   }
   let ll;
   if(root && root.children && root.children.length > 0){
-    ll = ergodicRoute(root.children);
+    ll = ergodicRoute(root.children, false)[0];
   }
-  //setActiveKey(location.pathname)
-  console.log('Aside')
   return (
     <aside className={style['aside-ppp']}>
       {ll 

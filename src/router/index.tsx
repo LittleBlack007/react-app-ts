@@ -105,7 +105,6 @@ export const routes: routesItem[] = [
           name: '嵌套路由',
           icon: 'IconPhoto'
         },
-        //element: ,
         children:[
           {
             path: '/next-routes/next-routes-children',
@@ -113,7 +112,16 @@ export const routes: routesItem[] = [
               name: '子路由',
               icon: 'IconPhoto'
             },
-            element: ColorInputs
+            children:[
+              {
+                path: '/next-routes/next-routes-children/next-routes/next-routes-grandchildren',
+                meta:{
+                  name: '孙子路由',
+                  icon: 'IconPhoto'
+                },
+                element: ColorInputs
+              }
+            ]
           }
         ]
       }
