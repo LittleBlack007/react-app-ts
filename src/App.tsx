@@ -14,12 +14,12 @@ function App() {
             <section className='app-setion'>
               <div className='app-aside-seat'></div>
               <Aside />
-              <div className='app-container-ppp eee'>
+              <div className='app-container-ppp'>
                 <header className='ppp-header-seat'></header>
                 <header className='ppp-hearder-real'>
                   <img src={logo} className="App-logo" alt="logo" />
                 </header>
-                <div className='ppp-scroll-container'>
+                <div className='ppp-scroll-container eee'>
                   <main className='ppp-main'>
                     <Outlet />
                   </main>

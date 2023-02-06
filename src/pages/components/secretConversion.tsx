@@ -35,7 +35,7 @@ export default function SecretConversion(){
   }
 
   return (
-    <Card shadow="sm" radius="md" withBorder>
+    <Card shadow="sm" radius="md" withBorder style={{ height: '1000px' }}>
       <Text weight={500} size="lg" mt="md">
         加密聊天
       </Text>
