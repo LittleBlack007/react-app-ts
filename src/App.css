@@ -1,11 +1,11 @@
 .App {
   background-color: #e3e3e3;
-  min-height: 100vh;
-  padding: 12px;
+  height: 100vh;
+  overflow-y: hidden;
 }
 
 .App .app-setion{
-  display: flex
+  display: flex;
 }
 /* #282c34 */
 .App-logo {
@@ -32,20 +32,19 @@
   }
 }
 
-.app-main-ppp{
+.app-container-ppp{
   position: relative;
-  min-height: 100vh;
   display: flex;
   flex: auto;
   flex-direction: column;
-  min-height: 0;
+  height: 100vh;
 }
 
-.app-main-ppp * {
+.app-container-ppp * {
   box-sizing: border-box;
 }
 
-.app-main-ppp .ppp-header-seat{
+.app-container-ppp .ppp-header-seat{
   height: 48px;
   line-height: 48px;
   background: transparent;
@@ -54,7 +53,7 @@
   flex: 0 0 auto;
 }
 
-.app-main-ppp .ppp-hearder-real{
+.app-container-ppp .ppp-hearder-real{
   padding: 0px;
   height: 48px;
   line-height: 48px;
@@ -66,14 +65,20 @@
   background-color: dodgerblue;
 }
 
-.app-main-ppp .ppp-mian{
-  position: relative;
-  margin: 18px;
-  flex: auto;
-  min-height: 0;
+.app-container-ppp .ppp-scroll-container{
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+  height: calc(100vh - 48px);
 }
 
-.app-main-ppp .ppp-footer{
+.ppp-scroll-container .ppp-main{
+  position: relative;
+  padding: 8px;
+  flex: 1 0;
+}
+
+.ppp-scroll-container .ppp-footer{
   color: rgba(0,0,0,.85);
   font-size: 14px;
   background: #f0f2f5;
@@ -82,6 +87,7 @@
   padding: 8px;
   border-radius: 4px;
 }
+
 
 .app-aside-seat{
   width: 208px; 

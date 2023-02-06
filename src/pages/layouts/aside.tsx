@@ -1,5 +1,5 @@
-import React, { ReactNode, useState } from "react";
-import { useActionData, useLocation, useNavigate } from "react-router-dom";
+import React, { ReactNode, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import style from './aside.module.css';
 import { routes, routesItem } from "@/router";
 import * as icons from '@tabler/icons';
@@ -11,6 +11,10 @@ function Aside(){
   const root = routes.find( item => item.path === '/' );
   const location = useLocation();
   const [ activeKey, setActiveKey ] = useState(location.pathname); // 当前路由路径默认激活项
+  useEffect(() => {
+    console.log('Aside useEffect',)
+    setActiveKey(location.pathname);
+  },[location.pathname])
   const navigate = useNavigate();
   // 遍历路由信息生成菜单
   function ergodicRoute(routes: routesItem[], defaultOpened: boolean): [ReactNode[],boolean]{

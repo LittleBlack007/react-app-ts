@@ -103,21 +103,23 @@ export const routes: routesItem[] = [
         path: '/next-routes',
         meta:{
           name: '嵌套路由',
-          icon: 'IconPhoto'
+          icon: 'IconAffiliate'
         },
+        redirect: '/next-routes/next-routes-children/next-routes-grandchildren',
         children:[
           {
             path: '/next-routes/next-routes-children',
             meta:{
               name: '子路由',
-              icon: 'IconPhoto'
+              icon: 'IconAffiliate'
             },
+            redirect: '/next-routes/next-routes-children/next-routes-grandchildren',
             children:[
               {
-                path: '/next-routes/next-routes-children/next-routes/next-routes-grandchildren',
+                path: '/next-routes/next-routes-children/next-routes-grandchildren',
                 meta:{
                   name: '孙子路由',
-                  icon: 'IconPhoto'
+                  icon: 'IconAffiliate'
                 },
                 element: ColorInputs
               }

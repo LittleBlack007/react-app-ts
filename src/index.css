@@ -8,6 +8,22 @@ body {
   background: #f0f2f5;
 }
 
+.eee::-webkit-scrollbar {
+  width: 8px;
+}
+
+.eee::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.eee{
+  scrollbar-width: 10px;
+  scrollbar-base-color: green !important;
+  scrollbar-track-color: red;
+  scrollbar-arrow-color: blue;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
