@@ -44,7 +44,7 @@ function identity <T>(value: T): T{
   return value
 }
 
-identity(123)
+identity<string>('123')
 
 interface Lengthwise {
   length: number;
