@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Card, TextInput, Select, Group, Button, LoadingOverlay } from '@mantine/core';
+import { Card, TextInput, Select, Group, Button, LoadingOverlay, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import  { request, HttpMethod } from '@/server/request';
 
@@ -61,14 +61,13 @@ export default function OpenAI(){
               { value: 'dialogue-babi-001', label: '智能对话' },
             ]}
           />
-
-          <TextInput
-            label='描述'
-            placeholder="请输入描述生成图片"
+          <Textarea
+            placeholder="请输入"
+            label="描述"
             withAsterisk
+            minRows={5}
             {...form.getInputProps('prompt')} 
           />
-
           <Group position="right" mt="md">
             <Button type="submit">提交</Button>
           </Group>

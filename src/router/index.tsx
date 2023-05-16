@@ -45,6 +45,7 @@ const SecretConversion = () => import('@/pages/components/secretConversion');
 const ConstellationFortune = () => import('@/pages/components/constellationFortune');
 const CustomGetImgHook = () => import("@/pages/components/customGetImgsHook");
 const ColorInputs = () => import('@/pages/components/colorInputs');
+const ScratchPrize = () => import('@/pages/components/scratchPrize');
 
 
 export type routesItem = {
@@ -121,7 +122,7 @@ export const routes: routesItem[] = [
                   name: '孙子路由',
                   icon: 'IconAffiliate'
                 },
-                element: ColorInputs
+                element: ScratchPrize
               }
             ]
           }

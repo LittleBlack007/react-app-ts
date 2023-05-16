@@ -1,9 +1,17 @@
 {
   "extends": "./path.tsconfig.json",
-  "compilerOptions": {
-    "target": "es5",
+  "compilerOptions": { // 设置与编译流程相关的选项
+    "experimentalDecorators": true,
+    "target": "es5",// 指定 ECMAScript 目标版本: 'ES3' (default), 'ES5', 'ES6'/'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'
+    /* 
+      这个是用于指定要引入的库文件，当ts文件中使用到了一些全局的类库的时候才会配置，属性值为一个数组，有es5、es6、es7、dom四个值可选
+      如果不配置lib，那么其默认会引入dom库，但是如果配置了lib，那么就只会引入指定的库了
+      注意：如果未指定--lib，则会注入默认的librares列表。注入的默认库为：
+      对于 --target ES5: DOM,ES5,ScriptHost
+      对于 --target ES6: DOM,ES6,DOM.Iterable,ScriptHost
+      TS 绝不会在您的代码中注入polyfill,所以需要你自己制定编译lib */
     "lib": [
-      "dom",
+      "dom", // html dom元素需要
       "dom.iterable",
       "esnext"
     ],
@@ -14,11 +22,11 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "module": "esnext", // 指定使用模块: 'commonjs', 'amd', 'system', 'umd' or 'es2015'
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": true, // 不生成输出文件
     "jsx": "react-jsx",
     // "baseUrl": "./",
     // "paths": {
@@ -27,6 +35,10 @@
   },
   "include": [
     "src",
-    "typed-css.d.ts"
+    "typed-css.d.ts",
+    "window.d.ts",
+  ],
+  "exclude": [
+
   ]
 }

@@ -6,8 +6,8 @@ import { showNotification } from '@mantine/notifications';
 import { IconArrowBadgeRight, IconArrowBadgeLeft } from '@tabler/icons'
 
 export default function SecretConversion(){
-  const [ decryptText, setDecryptText] = useState('' as any);
-  const [ encryptText, setEncryptText ] = useState('' as any);
+  const [ decryptText, setDecryptText] = useState('');
+  const [ encryptText, setEncryptText ] = useState('');
   const [ key, setKey ] = useState('静鸡鸡悄咪咪')
 
   function handleDecrypt(){ // 解密
@@ -43,26 +43,26 @@ export default function SecretConversion(){
         <Grid.Col span={5}>
           <Textarea
             value={decryptText}
-            onChange={(e:any) => setDecryptText(e.target.value)}
+            onChange={(e) => setDecryptText(e.target.value)}
             placeholder="请输入明文，点击加密后得到密文"
-            label="加密前"
+            label="明文"
             withAsterisk
-            minRows={5}
+            minRows={8}
           />
         </Grid.Col>
         <Grid.Col span={2}>
           <Button variant="gradient" gradient={{ from: 'teal', to: 'blue', deg: 60 }} onClick={handleEncrypt} size="xs">加密<IconArrowBadgeRight /></Button>
-          <TextInput value={key} onChange={ (e:any) => setKey(e.target.value) } placeholder="密码" style={{margin: '8px 0'}} />
+          <TextInput value={key} onChange={ (e) => setKey(e.target.value) } placeholder="密码" style={{margin: '8px 0'}} />
           <Button variant="gradient" gradient={{ from: 'blue', to: 'teal', deg: 60 }} onClick={handleDecrypt} size="xs"><IconArrowBadgeLeft />解密</Button>
         </Grid.Col>
         <Grid.Col span={5}>
           <Textarea
             value={encryptText}
-            onChange={(e:any) => setEncryptText(e.target.value)}
+            onChange={(e) => setEncryptText(e.target.value)}
             placeholder="请输入密文，点击解密后得到明文"
-            label="加密后"
+            label="密文"
             withAsterisk
-            minRows={5}
+            minRows={8}
           />
         </Grid.Col>
       </Grid>
