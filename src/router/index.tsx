@@ -2,7 +2,6 @@ import {
   createBrowserRouter,
   useNavigate,
   Navigate,
-  Outlet
 } from 'react-router-dom';
 import React, { useEffect, lazy, Suspense, ReactNode, ComponentType } from 'react';
 import { LoadingOverlay } from '@mantine/core';
@@ -44,8 +43,9 @@ const Home = () => import('@/pages/home/home');
 const SecretConversion = () => import('@/pages/components/secretConversion');
 const ConstellationFortune = () => import('@/pages/components/constellationFortune');
 const CustomGetImgHook = () => import("@/pages/components/customGetImgsHook");
-const ColorInputs = () => import('@/pages/components/colorInputs');
+// const ColorInputs = () => import('@/pages/components/colorInputs');
 const ScratchPrize = () => import('@/pages/components/scratchPrize');
+const Chat = () => import('@/pages/chat/chat');
 
 
 export type routesItem = {
@@ -75,6 +75,14 @@ export const routes: routesItem[] = [
           icon: 'IconHome'
         },
         element: Home,
+      },
+      {
+        path: "/chat",
+        meta:{
+          name: '在线聊天',
+          icon: 'IconBrandWechat'
+        },
+        element: Chat,
       },
       {
         path: "/constellation-fortune",

@@ -3,7 +3,7 @@ const {createProxyMiddleware } =  require('http-proxy-middleware')
 module.exports = function(app){
   app.use(
     createProxyMiddleware('/openai', { // openAI 接口
-      target: 'http://localhost:3001',
+      target: 'http://10.20.6.48:3001',
       changeOrigin: true,
       pathRewrite: { '^/openai': '' }
     }),
