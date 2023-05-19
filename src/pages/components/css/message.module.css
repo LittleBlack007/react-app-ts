@@ -1,12 +1,12 @@
 .message-box{
   color: aqua;
   padding: 4px;
+  z-index: 999;
 }
 .message-box :global(.mantine-Notification-icon){
   width: 16px;
   height: 16px;
   margin-right: 8px;
-  
 }
 .message-box :global(.mantine-Notification-title){
   margin-bottom: 0px;

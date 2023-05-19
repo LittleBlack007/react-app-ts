@@ -1,17 +1,59 @@
 .container{
   height: 100%;
-  min-width: 400px;
+  min-width: 500px;
 }
-.loginContainer {
+.chatContainer {
   width: 100%;
   display: flex;
   height: 100%;
   align-items: center;
   justify-content: center;
-  background: url("https://starry-lixu.oss-cn-hangzhou.aliyuncs.com/202209141908599.jpg") fixed no-repeat;
+  background: url("./bg.jpg") fixed no-repeat;
   background-size: cover;
 }
-
+.chating-page{
+  width: 500px;
+  min-height: 100%;
+  background: inherit;
+  border-radius: 8px;
+  overflow: hidden; /* 隐藏多余的模糊效果*/
+  z-index: 10;
+  padding: 8px;
+}
+.chating-page .chating-page-header{
+  height: 40px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+.chating-page .chating-page-name{
+  display: inline-block;
+  font-weight: bold;
+  color: mediumseagreen;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chating-page .chating-page-icon{
+  position: absolute;
+  right: 4px;
+  top: 2px;
+  color: dimgray;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+.chating-page .chating-page-icon:hover{
+  color: cadetblue;
+}
+.chating-page .chating-page-online{
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  color: dimgray;
+  font-size: 12px;
+}
 .login-form {
   width: 320px;
   /* height: 280px; */
@@ -21,7 +63,7 @@
   text-align: center;
   z-index: 10;
   background: inherit;
-  border-radius: 18px;
+  border-radius: 8px;
   overflow: hidden; /* 隐藏多余的模糊效果*/
 }
 .glass-mask{
@@ -36,7 +78,7 @@
   left: -10px;
   overflow: hidden;
   background: inherit;
-  box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 0 0 100vw rgba(255, 255, 255, 0.25);
   filter: blur(6px);
   z-index: -1;
 }
@@ -80,4 +122,41 @@
 
 .login-form button:hover {
   background-color: rgba(199, 128, 136, 0.8);
+}
+
+.msgItem{
+  display: flex;
+  width: 100%;
+  
+}
+.msgItem .msgBody{
+  margin-left: 8px;
+  flex: 1;
+}
+.msgItem .msgInfo{
+  font-size: 12px;
+  color: dimgray;
+}
+
+.msgItem .msgText{
+  flex: 1;
+  background: steelblue;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  padding: 4px;
+}
+.msgList{
+  height: calc(100vh - 200px);
+  overflow: auto;
+}
+.msgInput{
+  margin-top: 8px;
+}
+.msgBtn{
+  float: right;
+  margin: 4px 0;
+}
+.msgList::-webkit-scrollbar{
+  width: 4px;
+
 }

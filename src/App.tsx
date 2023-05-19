@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
@@ -8,7 +8,11 @@ import { NotificationsProvider } from '@mantine/notifications';
 
 function App() {
   return (
-      <MantineProvider withGlobalStyles withNormalizeCSS>
+      <MantineProvider 
+        theme={{
+          fontFamily: 'pingfangPP, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue',
+        }}
+      >
         <NotificationsProvider position="top-center">
           <div className="App">
             <section className='app-setion'>

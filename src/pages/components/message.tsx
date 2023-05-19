@@ -8,7 +8,7 @@ interface IState{
   title: ReactNode,
   state: string,
 }
-type IProps = any
+type IProps = unknown
 
 export default class Message extends React.Component<IProps, IState>{
   static setState: any;
@@ -47,17 +47,16 @@ export default class Message extends React.Component<IProps, IState>{
   render(): React.ReactNode {
     const { displayIs, title, state } = this.state;
     return (
-      displayIs 
+      displayIs
       ?
         <Notification
           className={style['message-box']}
-          style={{ 
+          style={{
             position: 'fixed', top: '50px', left: '50%', transform: 'translateX(-50%)', 
           }}
           icon={
             state === 'success' ? <IconCheck size="0.7rem" /> : <IconX size="0.7rem" />
           }
-          
           color={state === 'success' ? 'teal' : 'red'} 
           title={title}
         >

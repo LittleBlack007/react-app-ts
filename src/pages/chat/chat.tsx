@@ -1,41 +1,77 @@
-import React,{ ChangeEvent, useRef, useState } from 'react';
-import SocketIOClient from 'socket.io-client';
+import React,{ ChangeEvent, useEffect, useState } from 'react';
 import chatStyles from './chat.module.css';
-import { Input, Button, Notification  } from "@mantine/core";
+import { Input, Button, Textarea  } from "@mantine/core";
 import Message from '../components/message';
+import { IconLogout } from '@tabler/icons';
+import MsgItem from './msgItem';
+import setSocket from './sock';
+import { DefaultEventsMap } from '@socket.io/component-emitter';
+import { Socket } from 'socket.io-client';
+import moment from 'moment';
+
+const moduleFiles = require.context('./avatarImgs')
+const avatarList = moduleFiles.keys().map((modulePath) => {
+  const imgPath = moduleFiles(modulePath); //.default;
+  return imgPath
+})
+interface msgType{
+  name: string,
+  msg: string,
+  time: string,
+}
+interface logoutType{
+  onlineCount: number,
+  user: userType
+}
+interface userType {
+  id: string,
+  userName: string
+}
+interface loginInType {
+  socketId: string,
+  ip: string,
+  user: string,
+  event: string,
+  message: string,
+  onlineCount: number
+}
+type msgListType = Array<msgType>
 
 export default function Chat(){
-  function setSocket(){
-    // 同域名可以直接写端口号加路由（例如：":8080/xxx"）确保跨域问题已解决
-    const socket = SocketIOClient("ws://10.20.6.48:3001", {
-      // 这里transports的默认值为["polling", "websocket"] 也就是优先使用polling， 但是polling再谷歌浏览器连接不上
-      transports: ["websocket", "polling"],
-      // 这里的配置项有：IO工厂配置项、低级引擎配置项(会被设置到所有同一管理者的的socket实例上)
-      // forceNew, multiplex, transports,upgrade,
-      // rememberUpgrade,path,query,extraHeaders,withCredentials,
-      // forceBase64,timestampRequests,
-      // timestampParam,closeOnBeforeunload
-        
-      // 在 后端使用时，还有一些额外的配置项：
-      // agent, pfx, key, passphrase, cert, ca, ciphers, rejectUnauthorized
-        
-      // 还有 ManagerOptions 管理性配置项：
-      // autoConnect: false, // 是否自动连接，默认为true，设为false后，可以通过 connect() 或者 open()手动开启
-      // reconnection: false // 是否自动重连，默认为true，设为false后，需要手动进行重连
-      // reconnectionAttempts, reconnectionDelay, reconnectionDelayMax, randomizationFactor,timeout,parser
-        
-      // 鉴权配置
-      // auth: {
-      //   token: 'abcd'
-      // }
-    });
+  const [ onlineCount, setOnlineCount ] = useState(0);
+  const [comeInIs, setComeInIs] = useState(false);
+  const [ msgList, setMsgList ] = useState([] as msgListType);
+  const [userName, setUserName] = useState('');
+  const [socket, setStateSocket] = useState({} as Socket<DefaultEventsMap, DefaultEventsMap>)
+  const [ msg, setMsg ] = useState('');
+  function bandEventSocket(){
+    const socket = setSocket()
+    setStateSocket(socket);
+    // 连接成功
     socket.on("connect", () => {
-      console.log('链接成功')
+      console.log('连接成功')
+      socket.emit('login', { id: socket.id, userName: userName });
     });
-      
+
+    // 登进
+    socket.on('login', (data:loginInType) => {
+      setOnlineCount(data.onlineCount);
+      Message.show('success',JSON.stringify(data.message));
+    })
+    // 登出
+    socket.on('logout', (data:logoutType) => {
+      setOnlineCount(data.onlineCount);
+      Message.show('success',data.user.userName + '退出群聊');
+    })
+    // 接收到消息
+    socket.on('message', (data: msgType) => {
+      console.log(data,1231321)
+      setMsgList([...msgList,data])
+    })
+
     // 连接异常时，会触发
     socket.on("connect_error", (err) => {
-      console.warn(err);
+      Message.show('error',JSON.stringify(err));
       // 如果连接异常，修改transports传输方式
       // socket.io.opts.transports = ["polling", "websocket"];
       // 鉴权失败的话，可以修改token，再进行重连
@@ -45,33 +81,117 @@ export default function Chat(){
       //   socket.connect();
       // }
     });
+    socket.on('disconnect', () => {
+      console.log('退出成功')
+    })
   }
-  
+  const [ avatar, setAvatar ] = useState('');
+  useEffect(() => {
+    return setAvatar(avatarList[Math.floor(Math.random() * avatarList.length)])
+  },[])
+  // useEffect(() => {
+  //   console.log('chat 12312 useEffect')
+  //   bandEventSocket();
+  //   return () => {
+  //     console.log('chat return 1231231 useEffect')
+  //     socket.disconnect();
+  //   }
+  // },[])
+  useEffect(() => {
+    const localUserName = localStorage.getItem('userName');
+    if(localUserName){
+      setUserName(localUserName)
+    }
+  },[])
 
-  const inputRef = useRef()
-  const [userName, setUserName] = useState('');
   function handleInputUserName(e: ChangeEvent<HTMLInputElement>){
     const value = e.target.value;
     setUserName(value?.trim())
   }
-  function onSubmit(){
-    console.log(inputRef)
-    Message.show('error','出错了')
+  function handleInputMsg(e: ChangeEvent<HTMLTextAreaElement>){
+    const value = e.currentTarget.value;
+    setMsg(value)
   }
+  function handleSendMsg(){
+    setMsg('')
+    const data = { name: userName, msg: msg, time: moment().format('YYYY-MM-DD HH:mm:ss')  };
+    socket.emit('message', data)
+  }
+  
+  // 登记
+  function onSubmit(){
+    if(!userName.trim()){
+      Message.show('error','填写大名之后才能进入');
+      return;
+    }
+    localStorage.setItem('userName', userName);
+    setComeInIs(true);
+    if(Object.getOwnPropertyNames(socket).length === 0){ // 第一次初始化
+      bandEventSocket();
+    }else if(!socket.connected){ // 有了socket之后，未连接则要链接一下
+      socket.connect();
+    }
+  }
+  // 登出
+  function handleLogout(){
+    setComeInIs(false);
+    socket.disconnect();
+  }
+
   return (
     <div className={chatStyles.container}>
       <Message />
-      <div className={chatStyles.loginContainer}>
+      <div className={chatStyles.chatContainer}>
+      {!comeInIs 
+        ? 
         <div className={chatStyles['login-form'] + " " +chatStyles['glass-mask']}>
           <h2>登记即可畅聊</h2>
           <Input
             value={userName}
-            placeholder="您的大名"
+            placeholder="请输入您的大名"
             onInput={handleInputUserName}
           />
           <Button type="submit" onClick={onSubmit}>悄悄进入</Button>
         </div>
+        :
+        <div 
+          className={`${chatStyles['chating-page']} ${chatStyles['glass-mask']}`}
+        >
+          
+          <div className={chatStyles['chating-page-header']}>
+            <span className={chatStyles['chating-page-online']}>{onlineCount}在线</span>
+            <span className={chatStyles['chating-page-name']}>{userName}</span>
+            <IconLogout 
+              className={chatStyles['chating-page-icon']}
+              onClick={handleLogout}
+            />
+          </div>
+          <div className={chatStyles.msgList}>
+            {msgList.map((item,index) => (
+              <MsgItem key={index} avatar={avatar} name={item.name} msg={item.msg} time={item.time} />
+            ))}
+            
+          </div>
+          <div>
+          <Textarea
+            className={chatStyles.msgInput}
+            autosize
+            minRows={1}
+            value={msg}
+            onChange={handleInputMsg}
+          />
+          <Button 
+            className={chatStyles.msgBtn} 
+            variant="gradient" 
+            gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}
+            size="xs"
+            onClick={handleSendMsg}
+          >发送</Button>
+          </div>
+        </div>
+      }
       </div>
+      
     </div>
   )
 }
