@@ -1,6 +1,6 @@
 import SocketIOClient from 'socket.io-client';
 function setSocket(){
-  return SocketIOClient("ws://10.20.6.48:3001", {
+  return SocketIOClient("ws://10.20.4.66:3001", {
     // 这里transports的默认值为["polling", "websocket"] 也就是优先使用polling， 但是polling再谷歌浏览器连接不上
     transports: ["websocket", "polling"],
     // 这里的配置项有：IO工厂配置项、低级引擎配置项(会被设置到所有同一管理者的的socket实例上)

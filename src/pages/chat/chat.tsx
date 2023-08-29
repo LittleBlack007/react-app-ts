@@ -66,7 +66,7 @@ export default function Chat(){
     // 接收到消息
     socket.on('message', (data: msgType) => {
       console.log(data,1231321)
-      setMsgList([...msgList,data])
+      setMsgList(prev => [...prev,data])
     })
 
     // 连接异常时，会触发
