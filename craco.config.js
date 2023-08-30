@@ -2,6 +2,7 @@
 //对webpack配置别名
 // eslint-disable-next-line no-undef
 const path = require('path');
+const CopyPlugin = require("copy-webpack-plugin");
 
 // eslint-disable-next-line no-undef
 module.exports = {
@@ -13,5 +14,18 @@ module.exports = {
       // eslint-disable-next-line no-undef
       '@': path.resolve(__dirname, 'src'),
     },
+    // 插件
+    plugins: [
+      new CopyPlugin({
+        patterns:[{
+          from: path.resolve(__dirname, './version.json'),
+          to: path.resolve(__dirname, './build/version.json'),
+          transform(){
+            return new Date().toLocaleString();
+          }
+        }]
+        
+      })
+    ]
   },
 }
