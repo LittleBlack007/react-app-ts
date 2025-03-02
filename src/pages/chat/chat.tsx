@@ -8,6 +8,7 @@ import setSocket from './sock';
 import { DefaultEventsMap } from '@socket.io/component-emitter';
 import { Socket } from 'socket.io-client';
 import moment from 'moment';
+import BeautyAvatar from './beautyAvatar';
 
 const moduleFiles = require.context('./avatarImgs')
 const avatarList = moduleFiles.keys().map((modulePath) => {
@@ -142,6 +143,7 @@ export default function Chat(){
     <div className={chatStyles.container}>
       <Message />
       <div className={chatStyles.chatContainer}>
+        <BeautyAvatar />
       {!comeInIs 
         ? 
         <div className={chatStyles['login-form'] + " " +chatStyles['glass-mask']}>

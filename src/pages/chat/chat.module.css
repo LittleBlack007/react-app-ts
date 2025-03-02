@@ -10,6 +10,7 @@
   justify-content: center;
   background: url("./bg.jpg") fixed no-repeat;
   background-size: cover;
+  flex-direction: column;
 }
 .chating-page{
   width: 500px;

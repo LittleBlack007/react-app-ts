@@ -1,0 +1,32 @@
+.img {
+  --s: 100px;
+  --c1: #a3afa5;
+  --c2: #ecd078;
+  --b: 2px;
+  --f: 1;
+  --skinkOffset: calc((var(--s) - var(--s) * var(--f)) / 2 / var(--f) - var(--b)); /*收缩偏移值，这里要除以放大倍数是因为放大之后偏移量也会放大*/
+  --bgOption: content-box no-repeat center / calc(100% / var(--f)) 100%; /*content-box 背景图根据内容居中,除以倍数保证放大之后背景图保持原来大小不变，不包含边框，内边距*/
+
+  width: var(--s);
+  height: var(--s);
+  box-sizing: content-box;
+  cursor: pointer;
+  border-radius: 0 0 999px 999px;
+  transition: 0.3s;
+  padding-top: 10px;
+  outline: var(--b) solid var(--c1);
+  outline-offset: var(--skinkOffset);
+  transform: scale(var(--f));
+  background: radial-gradient(
+    circle closest-side, /*以最短边画圆*/
+    var(--c2) calc(100% - var(--b)),
+    var(--c1) calc(100% - var(--b)),
+    transparent 100%
+  ) var(--bgOption);
+  -webkit-mask:
+          radial-gradient(circle closest-side, #000000 99%, transparent) var(--bgOption),
+          linear-gradient(#000 0 0) no-repeat center calc(0px - var(--skinkOffset)) / calc(100% / var(--f) - 2 * var(--b)) 50%;
+}
+.img:hover {
+  --f: 1.2;
+}
