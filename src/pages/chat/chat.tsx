@@ -51,11 +51,11 @@ export default function Chat(){
     // 连接成功
     socket.on("connect", () => {
       console.log('连接成功')
-      socket.emit('login', { id: socket.id, userName: userName });
+      socket.emit('login', { socketId: socket.id, userName: userName });
     });
 
     // 登进
-    socket.on('login', (data:loginInType) => {
+    socket.on('loginsuccess', (data:loginInType) => {
       setOnlineCount(data.onlineCount);
       Message.show('success',JSON.stringify(data.message));
     })
