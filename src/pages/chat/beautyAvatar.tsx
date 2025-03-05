@@ -3,7 +3,7 @@ import React,{ ChangeEvent, useEffect, useState } from 'react';
 import AvatarModule from './avatar.module.css';
 
 function BeautyAvatar() {
-    return <img className={AvatarModule.img} src={require('./avatarImgs/houzi-tou.png')} alt="头像" />
+    return <img className={AvatarModule.img} src={require('./avatarImgs/houzi-tou.png')} alt="头像1" />
 
 }
 

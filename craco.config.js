@@ -3,6 +3,7 @@
 // eslint-disable-next-line no-undef
 const path = require('path');
 const CopyPlugin = require("copy-webpack-plugin");
+const LogServerAddressPlugin =  require("./src/utils/LogServerPlugin");
 
 // eslint-disable-next-line no-undef
 module.exports = {
@@ -14,19 +15,9 @@ module.exports = {
       // eslint-disable-next-line no-undef
       '@': path.resolve(__dirname, 'src'),
     },
-    configure: (webpackConfig, { env, paths }) => {
-      !webpackConfig.devServer ? webpackConfig.devServer = {} : null;
-      if(env === 'development') {
-        webpackConfig.devServer.after = (app, server, compiler) => {
-          const address = server.options.host || 'localhost';
-          const port = server.options.port || 3000;
-          console.log(`\nProject is running at http://${address}:${port}\n`);
-        }
-      }
-      return webpackConfig;
-    },
     // 插件
     plugins: [
+      new LogServerAddressPlugin(),
       new CopyPlugin({
         patterns:[{
           from: path.resolve(__dirname, './version.json'),

@@ -26,7 +26,8 @@ interface logoutType{
 }
 interface userType {
   id: string,
-  userName: string
+  userName: string,
+  password: string,
 }
 interface loginInType {
   socketId: string,
@@ -45,12 +46,13 @@ export default function Chat(){
   const [userName, setUserName] = useState('');
   const [socket, setStateSocket] = useState({} as Socket<DefaultEventsMap, DefaultEventsMap>)
   const [ msg, setMsg ] = useState('');
+  // 创建socket
   function bandEventSocket(){
     const socket = setSocket()
     setStateSocket(socket);
     // 连接成功
     socket.on("connect", () => {
-      console.log('连接成功')
+      console.log('连接成功-',socket.id)
       socket.emit('login', { socketId: socket.id, userName: userName });
     });
 
@@ -66,7 +68,7 @@ export default function Chat(){
     })
     // 接收到消息
     socket.on('message', (data: msgType) => {
-      console.log(data,1231321)
+      console.log('message', data)
       setMsgList(prev => [...prev,data])
     })
 
@@ -83,12 +85,18 @@ export default function Chat(){
       // }
     });
     socket.on('disconnect', () => {
-      console.log('退出成功')
+      console.log('连接断开了');
     })
   }
+
+  // 设置头像
   const [ avatar, setAvatar ] = useState('');
   useEffect(() => {
-    return setAvatar(avatarList[Math.floor(Math.random() * avatarList.length)])
+    setAvatar(avatarList[Math.floor(Math.random() * avatarList.length)])
+    const localUserName = localStorage.getItem('userName');
+    if(localUserName){
+      setUserName(localUserName)
+    }
   },[])
   // useEffect(() => {
   //   console.log('chat 12312 useEffect')
@@ -98,12 +106,6 @@ export default function Chat(){
   //     socket.disconnect();
   //   }
   // },[])
-  useEffect(() => {
-    const localUserName = localStorage.getItem('userName');
-    if(localUserName){
-      setUserName(localUserName)
-    }
-  },[])
 
   function handleInputUserName(e: ChangeEvent<HTMLInputElement>){
     const value = e.target.value;
@@ -127,6 +129,7 @@ export default function Chat(){
     }
     localStorage.setItem('userName', userName);
     setComeInIs(true);
+    console.log('Start', Object.getOwnPropertyNames(socket))
     if(Object.getOwnPropertyNames(socket).length === 0){ // 第一次初始化
       bandEventSocket();
     }else if(!socket.connected){ // 有了socket之后，未连接则要链接一下
@@ -150,9 +153,14 @@ export default function Chat(){
           <h2>登记即可畅聊</h2>
           <Input
             value={userName}
-            placeholder="请输入您的大名"
+            placeholder="大名"
             onInput={handleInputUserName}
           />
+          {/*<Input*/}
+          {/*  value={userName}*/}
+          {/*  placeholder="密码"*/}
+          {/*  onInput={handleInputUserName}*/}
+          {/*/>*/}
           <Button type="submit" onClick={onSubmit}>悄悄进入</Button>
         </div>
         :
